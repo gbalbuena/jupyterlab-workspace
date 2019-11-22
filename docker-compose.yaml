@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  datascience-notebook:
+    build: .
+    volumes:
+    - ./work:/home/jovyan/work
+    ports:
+    - 8888:8888
+    
