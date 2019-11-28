@@ -1,6 +1,6 @@
-# Machine Learning Workspace
+# data-science-workspace
 
-## Jupyther
+## Jupyter
 
 ### Added Libraries
 

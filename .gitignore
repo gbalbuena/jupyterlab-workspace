@@ -1,1 +1,9 @@
+data
+chronograf
+influxdb
+
+*/.ipynb_checkpoints
+work/data/*
+!work/data/*_sample.csv
+
 private
