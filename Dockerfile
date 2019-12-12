@@ -1,15 +1,29 @@
-FROM jupyter/datascience-notebook
+FROM ubuntu:18.04
 
-LABEL maintainer="Juan Gabriel Balbuena Borba <gabrielbalbuena@gmail.org>"
+LABEL maintainer="Juan Gabriel Balbuena Borba <gabrielbalbuena@gmail.com>"
 
-RUN pip install mlxtend memory_profiler
+RUN apt-get update
 
-# Asume root
-USER root
+# system packages
+RUN apt-get install -y build-essential libbz2-dev libssl-dev libreadline-dev
+RUN apt-get install -y curl git
+RUN apt-get install -y zlib1g-dev
+RUN apt-get install -y libsqlite3-dev
+RUN apt-get install -y graphviz libgraphviz-dev pkg-config
 
-# Install telegraf
-RUN wget https://dl.influxdata.com/telegraf/releases/telegraf_1.12.6-1_amd64.deb
-RUN dpkg -i telegraf_1.12.6-1_amd64.deb
+# python
+RUN apt-get install -y python3 python3-pip
+ADD requirements.txt /tmp/requirements.txt
+RUN pip3 install -r /tmp/requirements.txt
 
-RUN service telegraf start
-RUN telegraf &
+RUN echo "alias python=python3" >> ~/.bashrc
+RUN echo "alias pip=pip3" >> ~/.bashrc
+
+# RUN apt-get update
+# RUN apt-get install -y gnupg
+# COPY ./etc/influxdata.list /etc/apt/sources.list.d/influxdata.list
+# RUN wget https://repos.influxdata.com/influxdb.key
+# RUN apt-key add influxdb.key
+
+# RUN apt-get update
+# RUN apt-get -y install telegraf

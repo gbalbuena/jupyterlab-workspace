@@ -3,55 +3,69 @@ version: '3.7'
 services:
   # Define an InfluxDB service
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  influxdb:
-    image: influxdb:1.3.5
-    volumes:
-      - ./data/influxdb:/var/lib/influxdb
-    ports:
-      - "8086:8086"
+  # influxdb:
+  #   container_name: influxdb
+  #   image: influxdb:1.3.5
+  #   volumes:
+  #     - ./data/influxdb:/var/lib/influxdb
+  #   ports:
+  #     - "8086:8086"
 
   # Define a Chronograf service
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  chronograf:
-    image: chronograf:1.3.8
-    environment:
-      INFLUXDB_URL: http://influxdb:8086
-      KAPACITOR_URL: http://kapacitor:9092
-    ports:
-      - "8881:8888"
-    links:
-      - influxdb
-      - kapacitor
+  # chronograf:
+  #   container_name: chronograf
+  #   image: chronograf:1.3.8
+  #   environment:
+  #     INFLUXDB_URL: http://influxdb:8086
+  #     KAPACITOR_URL: http://kapacitor:9092
+  #   ports:
+  #     - "8881:8888"
+  #   links:
+  #     - influxdb
+  #     - kapacitor
 
   # Define a Kapacitor service
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  kapacitor:
-    image: kapacitor:1.3.3
-    environment:
-      KAPACITOR_HOSTNAME: kapacitor
-      KAPACITOR_INFLUXDB_0_URLS_0: http://influxdb:8086
-    links:
-      - influxdb
-    ports:
-      - "9092:9092"
+  # kapacitor:
+  #   container_name: kapacitor
+  #   image: kapacitor:1.3.3
+  #   environment:
+  #     KAPACITOR_HOSTNAME: kapacitor
+  #     KAPACITOR_INFLUXDB_0_URLS_0: http://influxdb:8086
+  #   links:
+  #     - influxdb
+  #   ports:
+  #     - "9092:9092"
 
-  datascience-notebook:
+
+  notebook:
     build: .
+    working_dir: /work
+    volumes:
+      - .:/work
+      - ./etc/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    command: [ "/bin/bash", "docker_cmd.sh" ]
     environment:
       KAPACITOR_HOSTNAME: notebook
       KAPACITOR_INFLUXDB_0_URLS_0: http://influxdb:8086
-    volumes:
-      - ./work:/home/jovyan/work
-      - ./etc/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      PYTHONPATH: /work:/work
     ports:
-      # notebook web
-      - 8888:8888
-      # kapacitor
-      - "8092:8092/udp"
-      - "8094:8094"
-      - "8125:8125/udp"
-    links:
-      - influxdb
+        # notebook web
+        - 8888:8888
+        # kapacitor
+        - "8092:8092/udp"
+        - "8094:8094"
+        - "8125:8125/udp"
+      # depends_on:
+      #   - influxdb
+
+
+
+
+
+
+
 
   # telegraf:
   #   image: telegraf:1.4.0
