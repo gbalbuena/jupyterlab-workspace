@@ -10,3 +10,4 @@ graphviz==0.8.4
 treeinterpreter==0.2.1
 mlxtend
 memory_profiler
+seaborn
