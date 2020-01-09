@@ -1,9 +1,11 @@
-data
+/data
+/work/data/*
+!work/data/*
+
+.ipynb_checkpoints
 chronograf
 influxdb
-
 work/.ipynb_checkpoints/*
-work/data/*
-!work/data/*_sample.csv
-
 private
+
+.env

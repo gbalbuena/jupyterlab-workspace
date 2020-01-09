@@ -50,17 +50,27 @@ services:
       KAPACITOR_HOSTNAME: notebook
       KAPACITOR_INFLUXDB_0_URLS_0: http://influxdb:8086
       PYTHONPATH: /work:/work
+    env_file:
+      - .env
     ports:
-        # notebook web
-        - 8888:8888
-        # kapacitor
-        - "8092:8092/udp"
-        - "8094:8094"
-        - "8125:8125/udp"
-      # depends_on:
+      # notebook web
+      - 8888:8888
+      # kapacitor
+      - "8092:8092/udp"
+      - "8094:8094"
+      - "8125:8125/udp"
+    depends_on:
+      - pg
       #   - influxdb
 
-
+  pg:
+    image: postgres:alpine
+    volumes:
+      - ./data/postgresql:/var/lib/postgresql/data
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
 
 
 
