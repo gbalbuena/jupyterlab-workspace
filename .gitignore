@@ -1,11 +1,14 @@
+
+.DS_Store
+.env
+.ipynb_checkpoints
+work/.ipynb_checkpoints/*
+
 /data
 /work/data/*
 !work/data/*
 
-.ipynb_checkpoints
 chronograf
 influxdb
-work/.ipynb_checkpoints/*
-private
 
-.env
+private
