@@ -18,12 +18,3 @@ RUN pip3 install -r /tmp/requirements.txt
 
 RUN echo "alias python=python3" >> ~/.bashrc
 RUN echo "alias pip=pip3" >> ~/.bashrc
-
-# RUN apt-get update
-# RUN apt-get install -y gnupg
-# COPY ./etc/influxdata.list /etc/apt/sources.list.d/influxdata.list
-# RUN wget https://repos.influxdata.com/influxdb.key
-# RUN apt-key add influxdb.key
-
-# RUN apt-get update
-# RUN apt-get -y install telegraf
