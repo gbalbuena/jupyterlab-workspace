@@ -1,24 +1,19 @@
 version: '3.7'
 
 services:
-  notebook:
+  jupyter:
     build: .
-    working_dir: /work
     volumes:
-      - .:/work
-      - ./etc/telegraf.conf:/etc/telegraf/telegraf.conf:ro
-    command: [ "/bin/bash", "docker_cmd.sh" ]
-    environment:
-      PYTHONPATH: /work:/work
-    env_file: 
-      - .env
+      - ./work:/home/jovyan/work
     ports:
-      - 8888:8888 # web
+      - 8888:8888
+    container_name: jupyter_notebook
+    command: "start-notebook.sh --NotebookApp.token="
 
   redis:
     image: 'docker.io/bitnami/redis:6.2-debian-10'
     environment:
-      # ALLOW_EMPTY_PASSWORD is recommended only for development.
+      # ALLOW_EMPTY_PASSWORD only in development
       - ALLOW_EMPTY_PASSWORD=yes
       - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
     ports:
